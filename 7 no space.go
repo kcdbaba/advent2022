@@ -74,7 +74,7 @@ func print_tree_recursive(t *Tree, indent string) {
 		if t.parent == nil {
 			fmt.Println(indent, "/")
 		} else {
-			fmt.Println(indent, t.name)
+			fmt.Println(indent, t.name, "/")
 		}
 		for _, child := range t.children {
 			print_tree_recursive(child, indent+"  ")
@@ -155,12 +155,15 @@ func main() {
 	//root.print_tree()
 	//fmt.Println(root.size)
 
-	fmt.Println(sum_size_limit_dirs(root, 100000))
+	const dir_size_limit = 100000
+	fmt.Println("1. Sum of dir with size of atmost", dir_size_limit, ":",
+		sum_size_limit_dirs(root, dir_size_limit))
 
 	const total_space = 70000000
 	const reqd_space = 30000000
 	free_space := total_space - root.size
 	to_del := reqd_space - free_space
 
-	fmt.Println(to_del, min_dir_size(root, to_del))
+	fmt.Println("Additional free space required:", to_del)
+	fmt.Println("2. Smallest dir size to delete:", min_dir_size(root, to_del))
 }
