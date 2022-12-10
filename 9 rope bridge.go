@@ -69,7 +69,10 @@ func MoveTail(head *Coordinates, tail *Coordinates) {
 func main() {
 	lines, _ := input.FileToLines("input/9.1.txt")
 	var knots = make([]Coordinates, 10)
-	var tail_coords = make(map[Coordinates]struct{})
+	var tail_coords = make([]map[Coordinates]struct{}, 2)
+	for i := 0; i < 2; i++ {
+		tail_coords[i] = make(map[Coordinates]struct{})
+	}
 
 	//fmt.Println(head, tail)
 	for _, line := range lines {
@@ -79,17 +82,23 @@ func main() {
 			for i := 1; i < 10; i++ {
 				MoveTail(&knots[i-1], &knots[i])
 			}
-			_, ok := tail_coords[knots[9]]
+			_, ok := tail_coords[0][knots[1]]
 			if !ok {
-				tail_coords[knots[9]] = struct{}{}
+				tail_coords[0][knots[1]] = struct{}{}
+			}
+			_, ok = tail_coords[1][knots[9]]
+			if !ok {
+				tail_coords[1][knots[9]] = struct{}{}
 			}
 			//fmt.Println(head, tail)
 		}
 	}
 
-	coords := make([]Coordinates, 0)
-	for k := range tail_coords {
-		coords = append(coords, k)
+	for i := 0; i < 2; i++ {
+		coords := make([]Coordinates, 0)
+		for k := range tail_coords[i] {
+			coords = append(coords, k)
+		}
+		fmt.Println(i+1, ":", len(coords))
 	}
-	fmt.Println(len(coords))
 }
